@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My web</title>
+  <link rel="stylesheet" href="mystyle.css">
+</head>
+<body>
+  <img src="lotto.jpg">
+  <hr/>
+  <h1>lotto</h1>
+<!--  (1)-->
+  <p>lotto game's rules</p>
+  <ul>
+    <li><span>Users can enter 3 numbers on the webpage (the range is 1~10)</span></li>
+    <li><span>Every time you start the game, 3 winning numbers will be randomly generated (the range is 1~10 without repetition)</span></li>
+    <li><span>When the user enters 3 numbers and presses the lottery button, it will start to compare the entered numbers with the winning numbers (regardless of the order in which they are arranged). match the numbers to enter the prize</span></li>
+  </ul>
+
+  <table>
+    <caption><h2>lotto number</h2></caption>
+    <tr>
+      <td>First: </td>
+      <td>
+        <input type="text" id="n1">
+      </td>
+    </tr>
+    <tr>
+      <td>Second: </td>
+      <td>
+        <input type="text" id="n2">
+      </td>
+    </tr>
+    <tr>
+      <td>Third: </td>
+      <td>
+        <input type="text" id="n3">
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <button onclick="reset()">reset</button>
+      </td>
+      <td>
+        <button onclick="check()">submit</button>
+      </td>
+    </tr>
+
+  </table>
+  
+
+  
+  <h2>result</h2>
+  <p id="msg"></p>
+  <p id="p"></p>
+
+  <script>
+
+    // (5)
+    function check(){
+
+      var succ=0;
+
+      if(!isNaN(document.getElementById("n1").value) &&
+              !isNaN(document.getElementById("n2").value) &&
+              !isNaN(document.getElementById("n3").value) ){
+          succ=1;
+      }
+
+      if(document.getElementById("n1").value==document.getElementById("n2").value
+            || document.getElementById("n1").value==document.getElementById("n3").value
+              || document.getElementById("n2").value==document.getElementById("n3").value
+      ){
+        succ=2;
+      }
+      if(succ===1){
+        match();
+      }
+      else if(succ===0){
+        alert("your input is invalid!!!!!");
+        reset();
+      }
+      else if(succ===2){
+        alert("your input is replicated!!!!!");
+        reset();
+      }
+
+    }
+
+    // (4)
+    function reset(){
+      document.getElementById("n1").value="";
+      document.getElementById("n2").value="";
+      document.getElementById("n3").value="";
+      document.getElementById("msg").textContent="";
+      document.getElementById("p").textContent=""
+    }
+    // (1)
+    function match() {
+
+      var a = parseInt(document.getElementById("n1").value);
+      var b = parseInt(document.getElementById("n2").value);
+      var c = parseInt(document.getElementById("n3").value);
+      var w1 = Math.floor(Math.random() * 10) + 1;
+      var w2 = Math.floor(Math.random() * 10) + 1;
+      while(w1===w2){
+        w2 = Math.floor(Math.random() * 10) + 1;
+      }
+      var w3 = Math.floor(Math.random() * 10) + 1;
+      while(w1===w3 || w2===w3){
+        w3 = Math.floor(Math.random() * 10) + 1;
+      }
+      
+      var money=0;
+      var match = 0;
+      
+      if (a === w1 || a === w2 || a === w3) {
+        match++;
+        money+=100;
+      }
+      if (b === w1 || b === w2 || b === w3) {
+        match++;
+        money+=50;
+      }
+      if (c === w1 || c === w2 || c === w3) {
+        match++;
+        money+=25;
+      }
+      
+      var msg = document.getElementById("msg");
+      var p = document.getElementById("p");
+
+      // (2)
+      if (match === 3) {
+        msg.textContent = "get prize";
+        p.textContent = "First prize"+money;
+      } else if (match === 2) {
+        msg.textContent = "get prize";
+        p.textContent = "second prize"+money;
+      } else if (match === 1) {
+        msg.textContent = "get prize";
+        p.textContent = "third prize"+money;
+      } else {
+        msg.textContent = "no prize";
+      }
+    }
+  </script>
+</body>
+</html>
